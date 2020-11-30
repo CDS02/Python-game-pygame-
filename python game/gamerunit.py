@@ -32,17 +32,6 @@ class Camera(object):
     def update(self, target): #update the rectangular camera to move view of the level
         self.state = self.camera_func(self.state, target.rect)
 
-def complex_camera(camera, target_rect):
-    l, t, _, _ = target_rect
-    _, _, w, h = camera
-    l, t, _, _ = -l+HALF_WIDTH, -t+HALF_HEIGHT, w, h
-
-    l = min(0, l)                           # stop scrolling at the left edge
-    l = max(-(camera.width-WIN_WIDTH), l)   # stop scrolling at the right edge
-    t = max(-(camera.height-WIN_HEIGHT), t) # stop scrolling at the bottom
-    t = min(0, t)                           # stop scrolling at the top
-    return pygame.Rect(l, t, w, h)
-
 #create thing class
 class Thing(pygame.sprite.Sprite):
     def __init__(self): #sprite to initialize all sprites
@@ -184,6 +173,19 @@ class winSprite(Platform):
 
     def update(self):
         self.rect.center = pygame.image.load() #update sprite with image
+
+def complex_camera(camera, target_rect):
+    l, t, _, _ = target_rect
+    _, _, w, h = camera
+    l, t, _, _ = -l+HALF_WIDTH, -t+HALF_HEIGHT, w, h
+
+    l = min(0, l)                           # stop scrolling at the left edge
+    l = max(-(camera.width-WIN_WIDTH), l)   # stop scrolling at the right edge
+    t = max(-(camera.height-WIN_HEIGHT), t) # stop scrolling at the bottom
+    t = min(0, t)                           # stop scrolling at the top
+    return pygame.Rect(l, t, w, h)
+        
+        
 
 #def gameworld function, 'level' parameter being which gameworld file is opened
 def gameWorld(level):
